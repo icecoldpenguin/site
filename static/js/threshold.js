@@ -1,39 +1,38 @@
-function getThresholdColor() {
-    const isDark = document.documentElement.dataset.theme === 'dark';
-    return isDark ? [24, 27, 34] : [39, 129, 196];
+function getNonBlueColor() {
+    try {
+        const computedBg = getComputedStyle(document.body).backgroundColor;
+        const match = computedBg.match(/\d+/g);
+        if (match && match.length >= 3) {
+            return [parseInt(match[0], 10), parseInt(match[1], 10), parseInt(match[2], 10)];
+        }
+    } catch (e) {}
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.classList.contains('dark');
+    return isDark ? [23, 24, 28] : [247, 247, 247];
 }
 
-async function thresholdImage(img, signal) {
-    const source = img.dataset.originalSrc || img.src;
-    const response = await fetch(source, signal ? { signal } : undefined);
-    const blob = await response.blob();
-    const bitmap = await createImageBitmap(blob);
-
+function thresholdImage(img) {
     const canvas = document.createElement('canvas');
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
+    canvas.width = img.naturalWidth || img.width || 220;
+    canvas.height = img.naturalHeight || img.height || 350;
 
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(bitmap, 0, 0);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = imageData.data;
     const threshold = Number(img.dataset.threshold || 20);
-    const [replaceR, replaceG, replaceB] = getThresholdColor();
+    const [bgR, bgG, bgB] = getNonBlueColor();
 
     for (let i = 0; i < pixels.length; i += 4) {
-        const r = pixels[i];
-        const g = pixels[i + 1];
-        const b = pixels[i + 2];
-        const brightness = (r + g + b) / 3;
-        if (brightness < threshold) {
-            pixels[i] = replaceR;
-            pixels[i + 1] = replaceG;
-            pixels[i + 2] = replaceB;
+        if ((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3 < threshold) {
+            pixels[i] = 39;
+            pixels[i + 1] = 129;
+            pixels[i + 2] = 196;
         } else {
-            pixels[i] = 255;
-            pixels[i + 1] = 255;
-            pixels[i + 2] = 255;
+            pixels[i] = bgR;
+            pixels[i + 1] = bgG;
+            pixels[i + 2] = bgB;
         }
     }
 
@@ -46,112 +45,68 @@ async function setupThresholdImages() {
 
     for (const img of images) {
         if (img.dataset.initialized) continue;
-
         img.dataset.initialized = 'true';
 
-        // Save original forever
-        img.dataset.originalSrc = img.src;
-
-        await img.decode();
-
-        const width = img.width;
-        const height = img.height;
-
-        const processed = await thresholdImage(img);
-
-        img.src = processed;
+        const originalSrc = img.src;
+        if (!img.complete) await img.decode().catch(() => {});
 
         const wrapper = document.createElement('div');
         wrapper.className = 'threshold-hover-wrapper';
-
-        Object.assign(wrapper.style, {
-            position: 'relative',
-            display: 'inline-block',
-            width: width + 'px',
-            height: height + 'px'
-        });
-
         img.parentElement.insertBefore(wrapper, img);
-
         wrapper.appendChild(img);
 
         const original = document.createElement('img');
-        original.src = img.dataset.originalSrc;
+        original.src = originalSrc;
         original.className = 'original-hover';
-
-        Object.assign(original.style, {
-            position: 'absolute',
-            left: '0',
-            top: '0',
-            width: width + 'px',
-            height: height + 'px',
-            opacity: '0',
-            transition: 'opacity 0.4s ease',
-            pointerEvents: 'none'
-        });
-
+        original.alt = img.alt || '';
+        original.dataset.threshold = img.dataset.threshold || '20';
         wrapper.appendChild(original);
 
-        const rating = img.dataset.rating;
+        img.src = thresholdImage(original);
 
+        const rating = img.dataset.rating;
         if (rating) {
             const ratingBar = document.createElement('div');
             ratingBar.textContent = rating;
             ratingBar.className = 'rating-bar';
-
-            Object.assign(ratingBar.style, {
-                position: 'absolute',
-                top: '6px',
-                right: '6px',
-                padding: '3px 8px',
-                background: 'rgba(0,0,0,0.9)',
-                borderRadius: '4px',
-                color: '#fff',
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: '700',
-                fontSize: '14px',
-                pointerEvents: 'none',
-                zIndex: '2'
-            });
-
             wrapper.appendChild(ratingBar);
         }
 
-        wrapper.addEventListener('mouseenter', () => {
-            original.style.opacity = '1';
-        });
-
-        wrapper.addEventListener('mouseleave', () => {
-            original.style.opacity = '0';
+        wrapper.addEventListener('click', (e) => {
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 768) {
+                document.querySelectorAll('.threshold-hover-wrapper.active').forEach(w => {
+                    if (w !== wrapper) w.classList.remove('active');
+                });
+                wrapper.classList.toggle('active');
+                e.stopPropagation();
+            }
         });
     }
+
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.threshold-hover-wrapper.active').forEach(w => w.classList.remove('active'));
+    });
 }
 
-async function refreshThresholdImages() {
-    // Abort any in-flight refresh to avoid races when toggling fast
-    if (window.__thresholdRefreshController) {
-        try {
-            window.__thresholdRefreshController.abort();
-        } catch (e) {}
-    }
-
-    const controller = new AbortController();
-    window.__thresholdRefreshController = controller;
-
-    const images = document.querySelectorAll('.threshold-hover');
-    for (const img of images) {
-        if (!img.dataset.originalSrc) continue; // not yet initialized
-        let processed;
-        try {
-            processed = await thresholdImage(img, controller.signal);
-        } catch (err) {
-            if (err && err.name === 'AbortError') return;
-            continue;
+function refreshThresholdImages() {
+    const wrappers = document.querySelectorAll('.threshold-hover-wrapper');
+    for (const wrapper of wrappers) {
+        const thresholdImg = wrapper.querySelector('.threshold-hover');
+        const originalImg = wrapper.querySelector('.original-hover');
+        if (thresholdImg && originalImg) {
+            thresholdImg.src = thresholdImage(originalImg);
         }
-
-        if (controller.signal.aborted) return;
-        img.src = processed;
     }
 }
+
+const themeObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+        if (mutation.attributeName === 'data-theme' || mutation.attributeName === 'class') {
+            refreshThresholdImages();
+            break;
+        }
+    }
+});
+themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
 document.addEventListener('DOMContentLoaded', setupThresholdImages);

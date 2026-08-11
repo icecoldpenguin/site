@@ -1,16 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="garden-grid">
-    <img src="{{ get_url(path='odyssey.jpg') }}" height="350px" width="220px" data-threshold="25" data-rating="9.5/10" class="threshold-hover" alt="Odyssey Banner">
-    <img src="{{ get_url(path='projecthailmary.jpg') }}" height="350px" width="220px" data-threshold="70" data-rating="9.6/10" class="threshold-hover" alt="Project Hail Mary Banner">
-    <img src="{{ get_url(path='avatarwayofwater.jpg') }}" height="350px" width="220px" data-threshold="90" data-rating="8.2/10" class="threshold-hover" alt="Avatar: The Way of Water Banner">
-    <img src="{{ get_url(path='httyd.jpg') }}" height="350px" width="220px" data-threshold="80" data-rating="9.4/10" class="threshold-hover" alt="How to Train Your Dragon Banner">
-    <img src="{{ get_url(path='f1themovie.jpg') }}" height="350px" width="220px" data-threshold="200" data-rating="8.8/10" class="threshold-hover" alt="F1 The Movie Banner">
-    <img src="{{ get_url(path='findingnemo.jpg') }}" height="350px" width="220px" data-threshold="120" data-rating="9.0/10" class="threshold-hover" alt="Finding Nemo Banner">
-    <img src="{{ get_url(path='dhurandhar.jpg') }}" height="350px" width="220px" data-threshold="70" data-rating="9.1/10" class="threshold-hover" alt="Dhurandhar Banner">
-    <img src="{{ get_url(path='loki.jpg') }}" height="350px" width="220px" data-threshold="70" data-rating="9.1/10" class="threshold-hover" alt="Loki Banner">
-    <img src="{{ get_url(path='spidermanbnd.jpg') }}" height="350px" width="220px" data-threshold="80" data-rating="9.2/10" class="threshold-hover" alt="Spider-Man: No Way Home Banner">
-    <img src="{{ get_url(path='sloplevelling.jpg') }}" height="350px" width="220px" data-threshold="90" data-rating="slop/10" class="threshold-hover" alt="Slop Levelling Banner">
+<div class="container">
+    <h1 class="garden-title">The Garden</h1>
+    <p class="garden-subtext">The garden is a collection of movies and tv shows i have watched and their ratings out of 10. This is based on my personal experience and has no relation to IMdB. (totally unbiased fs)</p>
+    <div class="garden-grid">
+        <img src="{{ get_url(path='odyssey.jpg') }}" width="220" height="350" data-threshold="25" data-rating="9.5/10" class="threshold-hover" alt="Odyssey Banner">
+        <img src="{{ get_url(path='projecthailmary.jpg') }}" width="220" height="350" data-threshold="70" data-rating="9.6/10" class="threshold-hover" alt="Project Hail Mary Banner">
+        <img src="{{ get_url(path='avatarwayofwater.jpg') }}" width="220" height="350" data-threshold="90" data-rating="8.2/10" class="threshold-hover" alt="Avatar: The Way of Water Banner">
+        <img src="{{ get_url(path='httyd.jpg') }}" width="220" height="350" data-threshold="80" data-rating="9.4/10" class="threshold-hover" alt="How to Train Your Dragon Banner">
+        <img src="{{ get_url(path='f1themovie.jpg') }}" width="220" height="350" data-threshold="200" data-rating="8.8/10" class="threshold-hover" alt="F1 The Movie Banner">
+        <img src="{{ get_url(path='findingnemo.jpg') }}" width="220" height="350" data-threshold="120" data-rating="9.0/10" class="threshold-hover" alt="Finding Nemo Banner">
+        <img src="{{ get_url(path='dhurandhar.jpg') }}" width="220" height="350" data-threshold="70" data-rating="9.1/10" class="threshold-hover" alt="Dhurandhar Banner">
+        <img src="{{ get_url(path='loki.jpg') }}" width="220" height="350" data-threshold="70" data-rating="9.1/10" class="threshold-hover" alt="Loki Banner">
+        <img src="{{ get_url(path='spidermanbnd.jpg') }}" width="220" height="350" data-threshold="80" data-rating="9.2/10" class="threshold-hover" alt="Spider-Man: No Way Home Banner">
+        <img src="{{ get_url(path='sloplevelling.jpg') }}" width="220" height="350" data-threshold="90" data-rating="slop/10" class="threshold-hover" alt="Slop Levelling Banner">
+    </div>
 </div>
 
+<p class="built-with">built with <a href="https://www.getzola.org/" target="_blank" rel="noopener">zola</a></p>
 {% endblock %}
