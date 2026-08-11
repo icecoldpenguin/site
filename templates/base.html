@@ -23,8 +23,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Geist+Pixel&family=Geist:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lilita+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Geist+Pixel&family=Geist:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lilita+One&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/comic-mono@0.0.1/index.css" rel="stylesheet">
+    <script src="{{ get_url(path="js/threshold.js") }}"></script>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -103,7 +104,7 @@
     {% block content %}{% endblock %}
 
     <script>
-        document.getElementById('theme-toggle').addEventListener('click', () => {
+        document.getElementById('theme-toggle').addEventListener('click', async () => {
             const isDark = document.documentElement.classList.contains('dark');
             const newTheme = isDark ? 'light' : 'dark';
 
@@ -115,6 +116,15 @@
             }
 
             localStorage.setItem('theme', newTheme);
+
+            // If refreshThresholdImages is available (from threshold.js), call it
+            if (typeof refreshThresholdImages === 'function') {
+                try {
+                    await refreshThresholdImages();
+                } catch (e) {
+                    // ignore aborts/errors
+                }
+            }
         });
     </script>
 

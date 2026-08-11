@@ -26,8 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateToggleUI();
 
     toggleBtn.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        (async () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
         // Add theme-toggled class to enable animations
         document.documentElement.classList.add('theme-toggled');
@@ -35,26 +36,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const noTransition = toggleBtn.hasAttribute('data-no-transition');
 
         // Check if startViewTransition is supported
-        if (noTransition || !document.startViewTransition) {
-            setTheme(newTheme);
-            return;
-        }
+            if (noTransition || !document.startViewTransition) {
+                await setTheme(newTheme);
+                return;
+            }
 
-        document.startViewTransition(() => {
-            setTheme(newTheme);
-        });
+            await document.startViewTransition(async () => {
+                await setTheme(newTheme);
+            });
+        })();
     });
 });
 
-function setTheme(newTheme) {
+async function setTheme(newTheme) {
     document.documentElement.setAttribute('data-theme', newTheme);
+
     if (newTheme === 'dark') {
         document.documentElement.classList.add('dark');
     } else {
         document.documentElement.classList.remove('dark');
     }
+
     localStorage.setItem('theme', newTheme);
+
     updateToggleUI();
+
+    // Refresh poster colors after theme change and wait for completion.
+    if (typeof refreshThresholdImages === "function") {
+        try {
+            await refreshThresholdImages();
+        } catch (e) {
+            // ignore aborts or errors
+        }
+    }
 }
 
 function updateToggleUI() {

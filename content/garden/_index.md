@@ -1,3 +1,3 @@
 +++
-template = "wip.html"
+template = "garden.html"
 +++

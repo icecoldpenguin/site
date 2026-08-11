@@ -593,8 +593,12 @@ html[data-theme="dark"] .sun-icon path {
     transition-delay: 0s, 0s;
 }
 
-html[data-theme="dark"] .moon-icon path {
-    transform: scale(1);
-    stroke-dashoffset: 0;
-    transition-delay: 0s, 0.3s;
+/* Garden poster grid */
+.garden-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 220px);
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
+    padding: 20px;
 }
