@@ -1,53 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
 <div class="container">
-
     <h1>{{ section.title }}</h1>
     <p class="friend-banners-label">friends webring</p>
     <div class="friend-banners">
         <a href="https://namishh.com" target="_blank" rel="noopener"><img src="https://namishh.com/static/images/button_nam.png" alt="namishh"></a>
         <a href="https://thatarcticpenguin.is-a.dev" target="_blank" rel="noopener"><img src="{{ get_url(path='tap_banner.png') }}" alt="friend"></a>
     </div>
+
     <div class="blogs-list">
         {% for page in section.pages %}
-        <a href="{{ page.permalink | safe }}" class="blog-link">
-            <div class="blog-card">
-                <div class="blog-content">
-                    <div class="blog-title">
-                        <span class="bullet">•</span>{{ page.title }}
-                    </div>
-                    <div class="blog-subtitle">
-                        {% if page.extra.subtitle %}
-                            {{ page.extra.subtitle }}
-                        {% elif page.description %}
-                            {{ page.description }}
-                        {% endif %}
-                    </div>
-                    <div class="blog-meta">
-                        <span class="blog-date">
-                            {% if page.date %}
-                                {{ page.date | date(format="%b %d, %Y") }}
-                            {% endif %}
-                        </span>
-                        {% if page.taxonomies.tags %}
-                        <div class="blog-tags">
-                            {% for tag in page.taxonomies.tags %}
-                                <span class="tag">{{ tag }}</span>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    </div>
+        <a href="{{ page.permalink | safe }}" class="blog-item-link">
+            <div class="blog-item">
+                <div class="blog-item-header">
+                    <span class="blog-item-title">{{ page.title }}</span>
+                    {% if page.extra.tags %}
+                    <span class="blog-item-tags">
+                        {% for tag in page.extra.tags %}
+                        <span class="blog-inline-tag">#{{ tag }}</span>
+                        {% endfor %}
+                    </span>
+                    {% elif page.taxonomies.tags %}
+                    <span class="blog-item-tags">
+                        {% for tag in page.taxonomies.tags %}
+                        <span class="blog-inline-tag">#{{ tag }}</span>
+                        {% endfor %}
+                    </span>
+                    {% endif %}
                 </div>
+                {% if page.extra.subtitle %}
+                <div class="blog-item-subtext">{{ page.extra.subtitle }}</div>
+                {% elif page.description %}
+                <div class="blog-item-subtext">{{ page.description }}</div>
+                {% endif %}
             </div>
         </a>
         {% endfor %}
     </div>
 </div>
-
-
 
 <p class="built-with">built with <a href="https://www.getzola.org/" target="_blank" rel="noopener">zola</a></p>
 {% endblock content %}

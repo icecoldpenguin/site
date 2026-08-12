@@ -45,7 +45,6 @@
     --content-link-hover-color: #6bb3ff;
     --h2-color: #ffffff;
     
-    /* Code blocks */
     --code-bg: #151515;
     --code-border: #2a2a2a;
     --code-text: #e0e0e0;
@@ -60,12 +59,10 @@
     --copy-btn-hover-bg: #3a3a3a;
     --copy-btn-hover-text: #ffffff;
     
-    /* Toggle Button */
     --toggle-btn-color: #888888;
     --toggle-btn-hover-color: #ffffff;
     --toggle-btn-hover-bg: rgba(255, 255, 255, 0.1);
 
-    /* View transition variables */
     --expo-in: linear(
         0 0%, 0.0085 31.26%, 0.0167 40.94%,
         0.0289 48.86%, 0.0471 55.92%,
@@ -109,7 +106,6 @@ html[data-theme="light"] {
     --copy-btn-hover-bg: #d0d0d0;
     --copy-btn-hover-text: #222222;
 
-    /* Toggle Button */
     --toggle-btn-color: #555555;
     --toggle-btn-hover-color: #0a0a0a;
     --toggle-btn-hover-bg: rgba(0, 0, 0, 0.06);
@@ -120,7 +116,7 @@ body {
     color: var(--text-color);
     font-family: "Geist", sans-serif;
     font-optical-sizing: auto;
-    font-weight: bold;
+    font-weight: var(--font-weight-medium);
     font-style: normal;
     line-height: 1.6;
     padding: 20px;
@@ -370,7 +366,6 @@ h2, h3, h4 {
     }
 }
 
-/* View Transition Styles */
 ::view-transition-group(root) {
     animation-timing-function: var(--expo-in);
 }
@@ -423,7 +418,6 @@ h2, h3, h4 {
     }
 }
 
-/* Animated Toggle Button SVG Styles */
 .theme-toggle {
     view-transition-name: theme-toggle;
 }
@@ -443,7 +437,6 @@ h2, h3, h4 {
                 stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Static Initial Theme Styles & Transition Rules */
 html[data-theme="light"] .sun-icon path {
     transform: scale(1);
     stroke-dashoffset: 0;
