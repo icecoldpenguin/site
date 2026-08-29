@@ -29,7 +29,8 @@
             </a>
         </nav>
 
-        <img src="{{ get_url(path='banner.png') }}" class="homepage-banner" alt="Penguin Banner">
+        <img src="{{ get_url(path='banner.png') }}" class="homepage-banner banner-light" alt="Penguin Banner">
+        <img src="{{ get_url(path='dark_banner.png') }}" class="homepage-banner banner-dark" alt="Penguin Banner">
     </div>
 
     <div class="homepage-copy">
@@ -163,6 +164,15 @@
             height: auto;
             pointer-events: none;
             z-index: 5;
+        }
+
+        html[data-theme="light"] .banner-dark {
+            display: none !important;
+        }
+
+        html[data-theme="dark"] .banner-light,
+        html:not([data-theme="light"]) .banner-light {
+            display: none !important;
         }
 
         .homepage-copy {

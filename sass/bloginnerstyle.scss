@@ -30,7 +30,7 @@
     --tracking-wider: .05em;
     --leading-relaxed: 1.625;
 
-    --bg-color: #17181c;
+    --bg-color: #0f0f0f;
     --text-color: #e0e0e0;
     --logo-color: #ffffff;
     --header-border: #333333;
@@ -138,10 +138,21 @@ header {
 }
 
 .logo {
-    color: var(--logo-color);
+    font-family: 'Lilita One', sans-serif;
+    color: #00c8ff;
     font-size: 1.2rem;
     text-decoration: none;
-    transition: color 0.3s;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.logo:hover {
+    text-shadow: 0 0 14px rgba(0, 200, 255, 0.6);
+}
+
+html[data-theme="light"] .logo {
+    color: var(--logo-color);
+    text-shadow: none;
 }
 
 .logo a {

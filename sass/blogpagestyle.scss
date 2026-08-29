@@ -5,7 +5,7 @@
 }
 
 :root {
-    --bg-color: #17181c;
+    --bg-color: #0f0f0f;
     --text-color: #e0e0e0;
     --h1-color: #ffffff;
     --card-bg: #151515;
@@ -136,9 +136,19 @@ nav a:hover {
 .penguin-logo {
     font-family: 'Lilita One', sans-serif;
     font-size: 1.25rem;
-    font-weight: 400;
-    color: var(--h1-color);
+    color: #00c8ff;
     letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.penguin-logo:hover {
+    text-shadow: 0 0 14px rgba(0, 200, 255, 0.6);
+}
+
+html[data-theme="light"] .penguin-logo {
+    color: var(--h1-color);
+    text-shadow: none;
 }
 
 .back-link {
@@ -157,6 +167,23 @@ nav a:hover {
     display: flex;
     align-items: center;
     gap: 1.2rem;
+}
+
+.desktop-links a {
+    font-family: 'Lilita One', sans-serif;
+    color: #00c8ff;
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.desktop-links a:hover {
+    text-shadow: 0 0 14px rgba(0, 200, 255, 0.6);
+}
+
+html[data-theme="light"] .desktop-links a {
+    color: var(--subtitle-color);
+    text-shadow: none;
 }
 
 .mobile-menu-btn {
@@ -216,7 +243,6 @@ nav a:hover {
     gap: 1.2rem;
     padding: 1.2rem;
     font-size: 1.2rem;
-    font-weight: 600;
     opacity: 0;
     pointer-events: none;
     transform: translateY(-10px);
@@ -231,13 +257,21 @@ nav a:hover {
 }
 
 .mobile-menu-overlay a {
-    color: var(--subtitle-color);
+    font-family: 'Lilita One', sans-serif;
+    color: #00c8ff;
     text-decoration: none;
-    transition: color 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+html[data-theme="light"] .mobile-menu-overlay a {
+    color: var(--subtitle-color);
+    text-shadow: none;
 }
 
 .mobile-menu-overlay a:hover {
     color: var(--h1-color);
+    text-shadow: 0 0 14px rgba(0, 200, 255, 0.6);
 }
 
 .theme-toggle {
@@ -687,4 +721,20 @@ html[data-theme="dark"] .sun-icon path {
         top: 6px;
         right: 6px;
     }
+}
+
+.blog-main-page {
+    font-family: 'Geist', sans-serif;
+
+    h1,
+    .blog-item-title,
+    .blog-inline-tag,
+    .blog-item-subtext,
+    .friend-banners-label {
+        font-family: 'Geist', sans-serif;
+    }
+}
+
+.built-with {
+    font-family: 'Geist', sans-serif;
 }
