@@ -44,6 +44,8 @@
         0.6835 94.51%, 0.8316 97.34%, 1 100%
     );
     --mask-gif: url('https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif');
+    --mask-gif-dance: url('https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif');
+    --mask-gif-bad-apple: url('/bad-apple-mask-full.gif');
 }
 
 html[data-theme="light"] {
@@ -379,6 +381,7 @@ h1 {
 .friend-banners-label {
     color: var(--meta-color);
     font-size: 0.6rem;
+    font-family: 'Geist', sans-serif;
     letter-spacing: 0.5px;
     margin-bottom: 0.32rem;
 }
@@ -402,8 +405,8 @@ h1 {
 }
 
 .friend-banners img {
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 88px;
     display: block;
     image-rendering: pixelated;
 }
@@ -592,6 +595,8 @@ h1 {
 .theme-toggle {
     view-transition-name: theme-toggle;
 }
+
+
 
 .solar-switch {
     display: block;

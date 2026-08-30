@@ -2,11 +2,12 @@
 
 {% block content %}
 <div class="container blog-main-page">
-    <h1>{{ section.title }}</h1>
+    <h1 style="font-family: 'Geist', sans-serif;">{{ section.title }}</h1>
     <p class="friend-banners-label">friends webring</p>
     <div class="friend-banners">
+        <a href="https://harsha.is-a.dev" target="_blank" rel="noopener"><img src="{{ get_url(path='button_harsha.png') }}" alt="harsha"></a>
         <a href="https://namishh.com" target="_blank" rel="noopener"><img src="https://namishh.com/static/images/button_nam.png" alt="namishh"></a>
-        <a href="https://thatarcticpenguin.is-a.dev" target="_blank" rel="noopener"><img src="{{ get_url(path='tap_banner.png') }}" alt="friend"></a>
+        <a href="https://thatarcticpenguin.is-a.dev" target="_blank" rel="noopener"><img src="{{ get_url(path='tap_banner.png') }}" alt="me"></a>
     </div>
 
     <div class="blogs-list">

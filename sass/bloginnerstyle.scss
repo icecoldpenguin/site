@@ -73,6 +73,8 @@
         0.6835 94.51%, 0.8316 97.34%, 1 100%
     );
     --mask-gif: url('https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif');
+    --mask-gif-dance: url('https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif');
+    --mask-gif-bad-apple: url('/bad-apple-mask-full.gif');
 }
 
 html[data-theme="light"] {
@@ -377,20 +379,14 @@ h2, h3, h4 {
     }
 }
 
+html.theme-toggled *,
+html.theme-toggled *::before,
+html.theme-toggled *::after {
+    transition: none !important;
+}
+
 ::view-transition-group(root) {
     animation-timing-function: var(--expo-in);
-}
-
-::view-transition-new(root) {
-    -webkit-mask: var(--mask-gif) center / 0 no-repeat;
-    mask: var(--mask-gif) center / 0 no-repeat;
-    animation: scale 1.8s;
-    animation-fill-mode: both;
-}
-
-::view-transition-old(root) {
-    animation: old-exit 1.8s;
-    animation-fill-mode: both;
 }
 
 ::view-transition-old(root),
@@ -398,7 +394,33 @@ h2, h3, h4 {
     mix-blend-mode: normal;
 }
 
-@keyframes scale {
+/* Switch from Dark to Light Mode (Dancing Girl GIF) */
+html[data-theme="light"]::view-transition-new(root) {
+    -webkit-mask: var(--current-mask-gif, var(--mask-gif-dance)) center / 0 no-repeat;
+    mask: var(--current-mask-gif, var(--mask-gif-dance)) center / 0 no-repeat;
+    animation: scale-light 1.8s both;
+}
+
+html[data-theme="light"]::view-transition-old(root) {
+    animation: old-exit-light 1.8s both;
+}
+
+/* Switch from Light to Dark Mode (Bad Apple GIF - original apple shape, 2.8s) */
+html[data-theme="dark"]::view-transition-new(root) {
+    -webkit-mask-image: var(--current-mask-gif, var(--mask-gif-bad-apple));
+    mask-image: var(--current-mask-gif, var(--mask-gif-bad-apple));
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    animation: scale-dark 2.8s both;
+}
+
+html[data-theme="dark"]::view-transition-old(root) {
+    animation: old-exit-dark 2.8s both;
+}
+
+@keyframes scale-light {
     0% {
         -webkit-mask-size: 0;
         mask-size: 0;
@@ -417,15 +439,40 @@ h2, h3, h4 {
     }
 }
 
-@keyframes old-exit {
+@keyframes old-exit-light {
     0% {
         opacity: 1;
     }
-    80% {
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes scale-dark {
+    0% {
+        -webkit-mask-size: 0;
+        mask-size: 0;
+    }
+    8% {
+        -webkit-mask-size: 32vmax;
+        mask-size: 32vmax;
+    }
+    73% {
+        -webkit-mask-size: 32vmax;
+        mask-size: 32vmax;
+    }
+    100% {
+        -webkit-mask-size: 2000vmax;
+        mask-size: 2000vmax;
+    }
+}
+
+@keyframes old-exit-dark {
+    0% {
         opacity: 1;
     }
     100% {
-        opacity: 0;
+        opacity: 1;
     }
 }
 
